@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>RT-AIDIS Dashboard</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+
+<!-- Login Portal -->
+<div id="loginPortal" class="login-overlay">
+    <div class="login-box">
+        <div class="login-logo">🛡️ RT-AIDIS</div>
+        <h2>Enterprise Access</h2>
+        <p>Real-Time AI Decision Integrity System</p>
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Username" value="admin">
+            <input type="password" id="password" placeholder="Password" value="••••••••">
+        </div>
+        <button class="login-btn" onclick="attemptLogin()">Secure Login</button>
+        <div class="login-footer">Protected by AES-256 Encryption</div>
+    </div>
+</div>
+
+<!-- Main Content (Hidden until login) -->
+<div id="mainDashboard" style="display: none;">
+
+    <!-- Live Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- PAGE 1: OVERVIEW (Matches your Image) -->
+    <div id="overviewPage">
+        <div class="header-simple">
+            <h1>🚀 RT-AIDIS Real-Time Dashboard</h1>
+            <div class="controls-pill">
+                <button class="pill-btn" onclick="toggleTheme()">🌙 / ☀️ Theme</button>
+                <button class="pill-btn" onclick="downloadCSV()">⬇️ Download CSV</button>
+                <button class="pill-btn" onclick="generateReport()">📄 Prof. Report</button>
+                <button class="pill-btn highlight" onclick="showAdvanced()">🌐 Advanced View</button>
+                <button class="pill-btn" onclick="showArchitecture()" style="background: #2980b9;">🗺️
+                    Architecture</button>
+            </div>
+        </div>
+
+        <div class="story-panel" id="aiStorySimple">
+            🤖 <b>System Insight:</b> Analyzing live streams...
+        </div>
+
+        <div class="overview-grid">
+            <div class="overview-card purple" onclick="showSector('Business')">
+                <div class="card-header">
+                    <span>💼 Business</span>
+                    <span id="val-Business">3127 <span class="up">↑ 1.6%</span></span>
+                </div>
+                <div class="status-pill growth">Growth</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Business" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card pink" onclick="showSector('Healthcare')">
+                <div class="card-header">
+                    <span>🏥 Healthcare</span>
+                    <span id="val-Healthcare">62 <span class="up">↑ 1.6%</span></span>
+                </div>
+                <div class="status-pill normal">Normal</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Healthcare" style="width: 45%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card orange" onclick="showSector('Manufacturing')">
+                <div class="card-header">
+                    <span>🏭 Manufacturing</span>
+                    <span id="val-Manufacturing">28 <span class="down">↓ 0%</span></span>
+                </div>
+                <div class="status-pill idle">Idle</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Manufacturing" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card blue" onclick="showSector('Smart City')">
+                <div class="card-header">
+                    <span>🏙️ Smart City</span>
+                    <span id="val-Smart City">17 <span class="down">↓ 15%</span></span>
+                </div>
+                <div class="status-pill smooth">Smooth</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Smart City" style="width: 25%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: ADVANCED VIEW (The Enterprise Dashboard) -->
+    <div id="advancedPage" style="display: none;">
+        <div class="header-container">
+            <button onclick="showLanding()"
+                style="float: left; background: none; border: 1px solid white; color: white; padding: 5px 15px; border-radius: 20px; cursor: pointer;">⬅
+                Back</button>
+            <h1>RT-AIDIS <span>Enterprise</span></h1>
+            <p style="opacity: 0.7; margin: 5px 0 0;">INTELLIGENT DATA INTEGRATION SYSTEM v2.0</p>
+        </div>
+
+        <div class="nav-bar">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="filterSector('All')">📂 All</button>
+                <button class="tab-btn" onclick="filterSector('Manufacturing')">🏗️ Mfg</button>
+                <button class="tab-btn" onclick="filterSector('Smart City')">🏙️ City</button>
+                <button class="tab-btn" onclick="filterSector('Business')">💼 Biz</button>
+                <button class="tab-btn" onclick="filterSector('Healthcare')">🏥 Health</button>
+            </div>
+            <input type="text" id="searchInput" placeholder="Search metrics..." onkeyup="handleSearch()">
+            <div class="controls">
+                <button class="btn" onclick="toggleTheme()">🌙</button>
+                <button class="btn" onclick="downloadCSV()">⬇️ CSV</button>
+            </div>
+        </div>
+
+        <div class="story-panel" id="aiStoryAdvanced">
+            🤖 <b>Advanced Logic:</b> Deep analysis in progress...
+        </div>
+
+        <div class="grid" id="cards"></div>
+    </div>
+
+    <!-- Alert List (Shared) -->
+    <div class="alerts-panel">
+        <h3>🔔 Recent Alerts</h3>
+        <ul id="alertsList"></ul>
+    </div>
+
+    <!-- Detailed Metric Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Metric Details</h2>
+            <canvas id="historyChart"></canvas>
+            <div id="anomalyText" style="margin-top: 20px;"></div>
+            <div id="simulationSection" style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+                <h3>🛡️ Scenario Simulator (AI Planning)</h3>
+                <p style="font-size: 0.85em; opacity: 0.7;">Adjust the slider to simulate values and see the AI's
+                    predicted impact.</p>
+                <input type="range" id="simSlider" style="width: 100%;" oninput="runSimulation()">
+                <div style="margin-top: 10px; font-weight: bold; color: #8e44ad;" id="simResult">AI Forecast: Stable
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Architecture Visualizer Modal -->
+    <div id="archModal" class="modal">
+        <div class="modal-content arch-content" style="max-width: 900px;">
+            <span class="close-btn" onclick="closeArchModal()">&times;</span>
+            <h2 style="text-align: center; color: #4b0082;">🛡️ AI-Governed Decision Integrity Architecture</h2>
+            <div class="arch-flow">
+                <div class="arch-node">
+                    <div class="node-icon">📡</div>
+                    <b>Data Sources</b>
+                    <span>IoT Sensors & ERP</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node active">
+                    <div class="node-icon">⚙️</div>
+                    <b>Integrity Engine</b>
+                    <span>Anomaly Detection</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node">
+                    <div class="node-icon">🤖</div>
+                    <b>AI Decision</b>
+                    <span>XAI Verification</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node">
+                    <div class="node-icon">📊</div>
+                    <b>Dashboard</b>
+                    <span>Real-Time Audit</span>
+                </div>
+            </div>
+            <div
+                style="margin-top: 30px; background: #f8fafc; padding: 20px; border-radius: 15px; font-size: 0.9em; color: #333">
+                <p><b>Working Principle:</b> The system ingests high-velocity data streams, passing them through a
+                    <b>Z-Score Statistical Filter</b>. If deviations are found, the <b>Explainable AI (XAI)</b> module
+                    correlates local metrics to find root causes, finally logging an <b>Integrity Proof</b> for the
+                    dashboard.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="health-status" id="healthStatus">Checking System Status...</div>
+        <div>RT-AIDIS Enterprise | © 2026 DeepMind Analytics</div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</div> <!-- End Main Dashboard -->
+</body>
+
+</html>

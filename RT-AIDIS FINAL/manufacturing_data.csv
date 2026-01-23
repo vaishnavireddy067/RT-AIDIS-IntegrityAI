@@ -1,0 +1,11 @@
+Timestamp,Production,Raw_Material,Process_Step,Machine,Defects,Inventory_Raw,Inventory_Finished,Workers,Cost_per_Unit,Safety_Alert
+1,105,Steel,Step 1,CNC,2,650,120,18,25.5,0
+2,110,Steel,Step 2,Lathe,1,640,125,19,25.2,0
+3,98,Plastic,Step 3,Press,5,630,118,17,26.1,1
+4,115,Steel,Step 4,CNC,0,620,130,20,24.8,0
+5,120,Steel,Step 5,Lathe,1,610,135,21,24.5,0
+6,90,Chemical,Step 2,Press,7,600,110,16,27.3,1
+7,130,Steel,Step 3,CNC,0,590,140,22,24.0,0
+8,125,Plastic,Step 4,Lathe,2,580,138,21,24.9,0
+9,100,Steel,Step 1,Press,4,570,120,18,26.0,1
+10,135,Steel,Step 5,CNC,0,560,145,23,23.8,0
