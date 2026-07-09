@@ -111,9 +111,7 @@ def free_port():
     s.close()
     return port
 
-# -----------------------------
-# RUN
-# -----------------------------
+
 if __name__ == "__main__":
     port = free_port()
     # Timer to open browser after short delay
