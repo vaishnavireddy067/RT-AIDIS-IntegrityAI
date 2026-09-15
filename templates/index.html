@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>RT-AIDIS 2.0 | Enterprise Decision Intelligence Platform</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+</head>
+
+<body>
+
+<!-- Login Portal -->
+<div id="loginPortal" class="login-overlay">
+    <div class="login-box">
+        <div class="login-logo">🛡️ RT-AIDIS 2.0</div>
+        <h2>Enterprise Access</h2>
+        <p>Autonomous AI Decision Integrity & Streaming Intelligence</p>
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Username" value="admin">
+            <input type="password" id="password" placeholder="Password" value="••••••••">
+        </div>
+        <button class="login-btn" onclick="attemptLogin()">Secure Login</button>
+        <div class="login-footer">Protected by AES-256 Cloud Encryption • DeepMind Analytics</div>
+    </div>
+</div>
+
+<!-- Main Content (Hidden until login) -->
+<div id="mainDashboard" style="display: none;">
+
+    <!-- Live Toast Container -->
+    <div id="notification-container"></div>
+
+    <!-- Top Enterprise Navigation Header -->
+    <header class="enterprise-header">
+        <div class="header-branding">
+            <div class="brand-logo">🛡️ RT-AIDIS <span>2.0</span></div>
+            <div class="brand-sub">ENTERPRISE DECISION INTELLIGENCE</div>
+        </div>
+
+        <nav class="enterprise-nav">
+            <button class="nav-tab active" onclick="switchMainView('liveStreamView', this)">📡 Live & DataGuard</button>
+            <button class="nav-tab" onclick="switchMainView('lineageView', this)">🗺️ Data Lineage</button>
+            <button class="nav-tab" onclick="switchMainView('ensembleMLView', this)">🧠 Ensemble ML</button>
+            <button class="nav-tab" onclick="switchMainView('businessImpactView', this)">💰 Business Impact</button>
+            <button class="nav-tab" onclick="switchMainView('whatIfView', this)">🧪 What-If 2.0</button>
+            <button class="nav-tab" onclick="switchMainView('agenticView', this)">🤖 Multi-Agent & RAG</button>
+            <button class="nav-tab" onclick="switchMainView('incidentsView', this)">📋 Incidents & Feedback</button>
+            <button class="nav-tab" onclick="switchMainView('governanceView', this)">🛡️ AI Governance</button>
+        </nav>
+
+        <div class="header-actions">
+            <!-- RBAC Role Selector -->
+            <select id="rbacRoleSelect" class="rbac-select" onchange="switchRBACRole(this.value)" title="Active Enterprise Role">
+                <option value="Enterprise Admin" selected>👑 Admin</option>
+                <option value="Site Reliability Engineer (SRE)">🔧 SRE Engineer</option>
+                <option value="Operations Manager">📊 Ops Manager</option>
+                <option value="Shift Operator">👷 Shift Operator</option>
+            </select>
+            <button class="top-action-btn" onclick="showCorrelationsModal()" title="Cross-Sector Correlations">🔗 Matrix</button>
+            <button class="top-action-btn" onclick="generateReport()" title="Export Audit Report">📄 Prof. Report</button>
+            <button class="top-action-btn" onclick="showArchitecture()" title="System Architecture">🗺️ Arch</button>
+            <button class="top-action-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+            <button class="top-action-btn highlight" onclick="downloadCSV()" title="Download Live CSV">⬇️ CSV</button>
+        </div>
+    </header>
+
+    <!-- Global Live Simulation & Anomaly Control Toolbar -->
+    <div class="sim-control-bar">
+        <div class="sim-group">
+            <span class="sim-label">⚡ Stream Engine:</span>
+            <button class="sim-btn" id="simPlayPauseBtn" onclick="toggleSimPause()">⏸️ Pause</button>
+            <div class="speed-selector">
+                <button class="speed-btn active" onclick="setSimSpeed(1.0, this)">1x</button>
+                <button class="speed-btn" onclick="setSimSpeed(2.0, this)">2x</button>
+                <button class="speed-btn" onclick="setSimSpeed(5.0, this)">5x</button>
+            </div>
+        </div>
+        <div class="sim-group">
+            <button class="sim-btn alert-trigger" onclick="triggerAnomalyDemo()">💥 Inject Anomaly (Test AI Response)</button>
+            <button class="sim-btn sound-toggle" id="soundToggleBtn" onclick="toggleSoundAlerts()">🔊 Sound: ON</button>
+        </div>
+    </div>
+
+    <!-- VIEW 1: LIVE STREAM & DATAGUARD QUALITY ENGINE -->
+    <div id="liveStreamView" class="view-section active">
+        <!-- DataGuard Quality & Integrity Banner -->
+        <div class="dataguard-banner">
+            <div class="dg-item">
+                <span class="dg-label">🛡️ DataGuard Quality</span>
+                <b class="dg-value" id="dgScore">98.4%</b>
+                <span class="dg-status" id="dgStatus">HEALTHY</span>
+            </div>
+            <div class="dg-item">
+                <span class="dg-label">⏱️ Ingestion Latency</span>
+                <b class="dg-value" id="dgLatency">1.2s</b>
+                <span class="dg-sub">Real-Time Stream</span>
+            </div>
+            <div class="dg-item">
+                <span class="dg-label">✅ Schema Validity</span>
+                <b class="dg-value" id="dgSchema">100%</b>
+                <span class="dg-sub">22 Fields Verified</span>
+            </div>
+            <div class="dg-item">
+                <span class="dg-label">📊 Data Drift Index</span>
+                <b class="dg-value" id="dgDrift">0.04</b>
+                <span class="dg-sub">Nominal Variance</span>
+            </div>
+            <div class="dg-item">
+                <span class="dg-label">🔍 Outlier Count</span>
+                <b class="dg-value" id="dgOutliers">0</b>
+                <span class="dg-sub">&gt; 2.5 σ Filter</span>
+            </div>
+        </div>
+
+        <!-- AI Decision Integrity Bar -->
+        <div class="integrity-banner">
+            <div class="integrity-score-box">
+                <div class="integrity-ring" id="integrityRing">
+                    <span id="integrityOverallVal">98.5%</span>
+                </div>
+                <div>
+                    <div class="integrity-title">🛡️ AI System Decision Integrity Index</div>
+                    <div class="integrity-badge optimal" id="integrityStatusBadge">OPTIMAL</div>
+                </div>
+            </div>
+            <div class="sector-integrity-grid">
+                <div class="sec-int-card" onclick="quickFilterSector('Manufacturing')">
+                    <span>🏭 Mfg Integrity</span>
+                    <b id="int-Mfg">99%</b>
+                </div>
+                <div class="sec-int-card" onclick="quickFilterSector('Smart City')">
+                    <span>🏙️ City Integrity</span>
+                    <b id="int-City">97%</b>
+                </div>
+                <div class="sec-int-card" onclick="quickFilterSector('Business')">
+                    <span>💼 Biz Integrity</span>
+                    <b id="int-Biz">100%</b>
+                </div>
+                <div class="sec-int-card" onclick="quickFilterSector('Healthcare')">
+                    <span>🏥 Health Integrity</span>
+                    <b id="int-Health">98%</b>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Insight Story Panel -->
+        <div class="story-panel" id="aiStorySimple">
+            🤖 <b>System Insight:</b> Ingesting high-velocity streams...
+        </div>
+
+        <!-- Sector Summary KPI Cards -->
+        <div class="overview-grid">
+            <div class="overview-card purple" onclick="quickFilterSector('Business')">
+                <div class="card-header">
+                    <span>💼 Business</span>
+                    <span id="val-Business">3127 <span class="up">↑ 1.6%</span></span>
+                </div>
+                <div class="status-pill growth">Growth</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Business" style="width: 70%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card pink" onclick="quickFilterSector('Healthcare')">
+                <div class="card-header">
+                    <span>🏥 Healthcare</span>
+                    <span id="val-Healthcare">62 <span class="up">↑ 1.6%</span></span>
+                </div>
+                <div class="status-pill normal">Normal</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Healthcare" style="width: 45%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card orange" onclick="quickFilterSector('Manufacturing')">
+                <div class="card-header">
+                    <span>🏭 Manufacturing</span>
+                    <span id="val-Manufacturing">28 <span class="down">↓ 0%</span></span>
+                </div>
+                <div class="status-pill idle">Idle</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Manufacturing" style="width: 30%;"></div>
+                </div>
+            </div>
+
+            <div class="overview-card blue" onclick="quickFilterSector('Smart City')">
+                <div class="card-header">
+                    <span>🏙️ Smart City</span>
+                    <span id="val-Smart City">17 <span class="down">↓ 15%</span></span>
+                </div>
+                <div class="status-pill smooth">Smooth</div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="bar-Smart City" style="width: 25%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Metric Stream Filter -->
+        <div class="stream-section">
+            <div class="nav-bar" style="margin-top: 20px;">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="filterSector('All')">📂 All (22)</button>
+                    <button class="tab-btn" onclick="filterSector('Manufacturing')">🏗️ Mfg</button>
+                    <button class="tab-btn" onclick="filterSector('Smart City')">🏙️ City</button>
+                    <button class="tab-btn" onclick="filterSector('Business')">💼 Biz</button>
+                    <button class="tab-btn" onclick="filterSector('Healthcare')">🏥 Health</button>
+                </div>
+                <input type="text" id="searchInput" placeholder="Search live telemetry..." onkeyup="handleSearch()">
+            </div>
+            <div class="grid" id="cards"></div>
+        </div>
+    </div>
+
+    <!-- VIEW 2: ENSEMBLE ANOMALY & PREDICTIVE MAINTENANCE -->
+    <div id="ensembleMLView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>🧠 Ensemble Anomaly Detection & Predictive Maintenance Radar</h2>
+            <p>Multi-model consensus combining <b>Isolation Forest</b>, <b>Statistical Z-Score</b>, and <b>Volatility Wavelet Detection</b> with 24-hour predictive failure forecasting.</p>
+        </div>
+
+        <div class="ensemble-summary-row">
+            <div class="ensemble-stat-card">
+                <span>🤖 Primary Detection Model</span>
+                <b>Isolation Forest (Scikit-Learn)</b>
+                <span class="sub">Contamination Rate: 0.10</span>
+            </div>
+            <div class="ensemble-stat-card">
+                <span>🛡️ Statistical Validator</span>
+                <b>Rolling Z-Score (3.0σ)</b>
+                <span class="sub">99.7% Confidence Range</span>
+            </div>
+            <div class="ensemble-stat-card">
+                <span>📈 Early Warning Forecast</span>
+                <b>24h Failure Horizon</b>
+                <span class="sub">Dynamic Logistic Projection</span>
+            </div>
+        </div>
+
+        <div class="ensemble-table-container">
+            <table class="ensemble-table">
+                <thead>
+                    <tr>
+                        <th>Metric & Stream</th>
+                        <th>Current Value</th>
+                        <th>Isolation Forest</th>
+                        <th>Z-Score</th>
+                        <th>Volatility</th>
+                        <th>Ensemble Score</th>
+                        <th>Severity</th>
+                        <th>24h Failure Prob</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="ensembleTableBody">
+                    <tr><td colspan="9" style="text-align: center; padding: 20px;">Evaluating multi-model ensemble...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VIEW 3: ROOT CAUSE & BUSINESS IMPACT HUB -->
+    <div id="businessImpactView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>💰 Root Cause Analysis & Business Impact Quantifier</h2>
+            <p>Translates mathematical anomalies into concrete <b>Financial Losses (₹ / day)</b>, <b>Downtime Risks (Hours)</b>, and <b>SLA Breaches</b>.</p>
+        </div>
+
+        <div class="impact-metrics-row">
+            <div class="impact-card red">
+                <span>💸 Total Revenue at Risk</span>
+                <b id="impactTotalLoss">₹0 / day</b>
+                <span class="sub">Calculated via Defect &amp; SLA Penalty Model</span>
+            </div>
+            <div class="impact-card orange">
+                <span>⏱️ Max Predicted Downtime</span>
+                <b id="impactMaxDowntime">0.0 hrs</b>
+                <span class="sub">Estimated equipment recovery time</span>
+            </div>
+            <div class="impact-card blue">
+                <span>⚠️ Active Critical Bottlenecks</span>
+                <b id="impactActiveCount">0</b>
+                <span class="sub">Requiring immediate mitigation</span>
+            </div>
+        </div>
+
+        <div class="section-subtitle">🔬 Live Causal Chains &amp; Impact Decomposition</div>
+        <div id="impactBreakdownList" class="impact-grid">
+            <div style="text-align: center; padding: 30px; opacity: 0.7;">No active business risks detected. All operations are nominal.</div>
+        </div>
+    </div>
+
+    <!-- VIEW 4: WHAT-IF SCENARIO SIMULATOR 2.0 -->
+    <div id="whatIfView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>🧪 What-If Scenario Simulator 2.0 (Multi-Variable Stress Testing)</h2>
+            <p>Simulate operational parameter changes across Production, Staffing, Demand, and Thermal Sensor Load to predict risks, costs, and SLA impacts.</p>
+        </div>
+
+        <div class="what-if-layout">
+            <!-- Parameter Sliders -->
+            <div class="sim-sliders-panel">
+                <h3>🎛️ Operational Parameters</h3>
+                
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>🏗️ Production Rate Change</span>
+                        <b id="valProdSlider">+0%</b>
+                    </div>
+                    <input type="range" id="sliderProd" min="-50" max="50" value="0" oninput="updateWhatIfSim()">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>👷 Staffing Allocation Change</span>
+                        <b id="valStaffSlider">+0%</b>
+                    </div>
+                    <input type="range" id="sliderStaff" min="-50" max="50" value="0" oninput="updateWhatIfSim()">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>🛒 Market Demand Surge</span>
+                        <b id="valDemandSlider">+0%</b>
+                    </div>
+                    <input type="range" id="sliderDemand" min="-50" max="50" value="0" oninput="updateWhatIfSim()">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-header">
+                        <span>⚡ Thermal &amp; Sensor Stress</span>
+                        <b id="valSensorSlider">+0%</b>
+                    </div>
+                    <input type="range" id="sliderSensor" min="-50" max="50" value="0" oninput="updateWhatIfSim()">
+                </div>
+
+                <button class="reset-sim-btn" onclick="resetWhatIfSliders()">🔄 Reset All Parameters</button>
+            </div>
+
+            <!-- Simulation Results Output -->
+            <div class="sim-results-panel">
+                <h3>📊 Projected Scenario Outcomes</h3>
+                
+                <div class="sim-outcome-grid">
+                    <div class="sim-metric-box">
+                        <span>Projected Revenue</span>
+                        <b id="simRev">3,200</b>
+                    </div>
+                    <div class="sim-metric-box">
+                        <span>Projected Defect Rate</span>
+                        <b id="simDefects">2.0 / min</b>
+                    </div>
+                    <div class="sim-metric-box">
+                        <span>Projected Unit Cost</span>
+                        <b id="simUnitCost">₹25.5</b>
+                    </div>
+                    <div class="sim-metric-box highlight">
+                        <span>Predicted Anomaly Prob</span>
+                        <b id="simProb">25.0%</b>
+                    </div>
+                </div>
+
+                <div class="sim-risk-banner" id="simRiskBanner">
+                    <div id="simRiskLabel">LOW RISK (SAFE)</div>
+                    <div id="simNetFinancial" style="font-weight: bold; font-size: 1.1em; margin-top: 5px;">+₹0 Net Variance</div>
+                </div>
+
+                <div class="sim-advisory-box">
+                    <b>🤖 AI Scenario Advisory:</b>
+                    <p id="simAdvisoryText">Safe parameter configuration. Operating well within nominal thresholds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 5: AGENTIC AI & RAG SOP ASSISTANT -->
+    <div id="agenticView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>🤖 Multi-Agent Decision Pipeline &amp; Grounded RAG SOP Assistant</h2>
+            <p>A collaborative 4-Agent team (<b>Data</b>, <b>ML</b>, <b>RCA</b>, <b>Decision</b>) coupled with semantic retrieval over enterprise Standard Operating Procedures.</p>
+        </div>
+
+        <div class="agentic-grid">
+            <!-- Left: 4-Agent Pipeline Execution -->
+            <div class="agent-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3>🤖 4-Agent Decision Chain</h3>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="agentMetricSelect" class="agent-select" onchange="runAgentConsultation()">
+                            <option value="Defects Count">Defects Count</option>
+                            <option value="Prod Rate">Prod Rate</option>
+                            <option value="Air Quality">Air Quality</option>
+                            <option value="Traffic Vol">Traffic Vol</option>
+                            <option value="Patient Count">Patient Count</option>
+                            <option value="Revenue">Revenue</option>
+                            <option value="Safety Alert">Safety Alert</option>
+                        </select>
+                        <button class="agent-run-btn" onclick="runAgentConsultation()">⚡ Consult</button>
+                    </div>
+                </div>
+
+                <div id="agentChatContainer" class="agent-chat-feed">
+                    <div style="text-align: center; padding: 20px;">Click "Consult" to activate the 4-agent decision chain.</div>
+                </div>
+            </div>
+
+            <!-- Right: Searchable RAG SOP Knowledge Base -->
+            <div class="rag-panel">
+                <h3>📚 Enterprise RAG SOP Knowledge Base</h3>
+                <div class="rag-search-box">
+                    <input type="text" id="ragQueryInput" placeholder="Search SOPs (e.g. cooling, defects, hospital surge, traffic)..." onkeyup="if(event.key==='Enter') searchSOPKnowledge()">
+                    <button class="rag-btn" onclick="searchSOPKnowledge()">🔍 Search SOP</button>
+                </div>
+                <div id="ragResultsContainer" class="rag-results-feed">
+                    <div style="text-align: center; padding: 20px; opacity: 0.7;">Type a query or select a metric to retrieve grounded SOP protocols.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 6: INCIDENT MANAGEMENT & HUMAN FEEDBACK LOOP -->
+    <div id="incidentsView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>📋 Enterprise Incident Lifecycle &amp; Human-in-the-Loop Feedback</h2>
+            <p>Track incidents across <b>OPEN → INVESTIGATING → MITIGATED → RESOLVED</b> and record human validation for continuous model learning.</p>
+        </div>
+
+        <div class="feedback-stats-row">
+            <div class="fb-stat-card">
+                <span>🎯 Human Validation Accuracy</span>
+                <b id="fbAccuracy">96.4%</b>
+                <span class="sub">Operator Consensus Rate</span>
+            </div>
+            <div class="fb-stat-card">
+                <span>✅ Approved Recommendations</span>
+                <b id="fbApprovedCount">14 / 15</b>
+                <span class="sub">Model Alignment Index</span>
+            </div>
+            <div class="fb-stat-card">
+                <span>🔄 Continuous Learning Loop</span>
+                <b style="color: #10b981;">ACTIVE</b>
+                <span class="sub">Weights Tuned on Validations</span>
+            </div>
+        </div>
+
+        <div class="incident-board" id="incidentListContainer">
+            <div style="text-align: center; padding: 20px;">Loading incident management stream...</div>
+        </div>
+    </div>
+
+    <!-- VIEW: DATA LINEAGE & DEPENDENCY MAP -->
+    <div id="lineageView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>🗺️ Enterprise Data Lineage &amp; Downstream Dependency Topology</h2>
+            <p>Traces operational telemetry from <b>Origin Sources</b> through <b>Ingestion Gateways</b> to <b>Downstream Business &amp; Physical Assets</b> with real-time cascade blast radius analysis.</p>
+        </div>
+
+        <div class="blast-radius-alert" id="lineageBlastAlert">
+            <div id="lineageBlastText">✅ Lineage Nominal: Zero downstream service degradation detected across 12 dependency nodes.</div>
+        </div>
+
+        <div class="lineage-canvas">
+            <div class="lineage-tier">
+                <div class="tier-label">1. Data Sources</div>
+                <div class="tier-nodes" id="tierSources">
+                    <!-- Dynamic Source Nodes -->
+                </div>
+            </div>
+
+            <div class="lineage-connector">➜</div>
+
+            <div class="lineage-tier">
+                <div class="tier-label">2. Ingestion &amp; Observability</div>
+                <div class="tier-nodes" id="tierIngestion">
+                    <!-- Dynamic Ingestion Nodes -->
+                </div>
+            </div>
+
+            <div class="lineage-connector">➜</div>
+
+            <div class="lineage-tier">
+                <div class="tier-label">3. AI Intelligence Hub</div>
+                <div class="tier-nodes" id="tierAI">
+                    <!-- Dynamic AI Nodes -->
+                </div>
+            </div>
+
+            <div class="lineage-connector">➜</div>
+
+            <div class="lineage-tier">
+                <div class="tier-label">4. Downstream Impact Nodes</div>
+                <div class="tier-nodes" id="tierDownstream">
+                    <!-- Dynamic Downstream Nodes -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: AI GOVERNANCE & MLOPS AUDIT TRAIL -->
+    <div id="governanceView" class="view-section" style="display: none;">
+        <div class="section-title-box">
+            <h2>🛡️ Enterprise AI Governance, Model Registry &amp; Audit Trail</h2>
+            <p>Continuous tracking of deployed model versions, inference latency, drift metrics, and an immutable log of operator actions.</p>
+        </div>
+
+        <div class="section-subtitle">📦 Deployed Production Model Registry</div>
+        <div class="model-registry-grid" id="modelRegistryContainer">
+            <!-- Dynamic Model Cards -->
+        </div>
+
+        <div class="section-subtitle" style="margin-top: 30px;">📜 Immutable Enterprise Decision &amp; Audit Trail</div>
+        <div class="audit-table-container">
+            <table class="ensemble-table">
+                <thead>
+                    <tr>
+                        <th>Audit ID</th>
+                        <th>Timestamp</th>
+                        <th>Actor &amp; RBAC Role</th>
+                        <th>Action</th>
+                        <th>Target System</th>
+                        <th>Rationale &amp; Decision Details</th>
+                    </tr>
+                </thead>
+                <tbody id="auditTableBody">
+                    <tr><td colspan="6" style="text-align: center; padding: 20px;">Loading governance audit logs...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Shared Alerts Stream Panel -->
+    <div class="alerts-panel">
+        <div class="alerts-header">
+            <h3>🔔 Real-Time AI Alert &amp; Anomaly Stream</h3>
+            <div class="alert-controls">
+                <button class="alert-filter-btn active" onclick="filterAlerts('All', this)">All</button>
+                <button class="alert-filter-btn" onclick="filterAlerts('Critical', this)">🚨 Critical</button>
+                <button class="alert-filter-btn" onclick="filterAlerts('Anomaly', this)">⚠️ Anomaly</button>
+                <button class="alert-filter-btn clear-btn" onclick="clearAllAlerts()">🗑️ Clear</button>
+            </div>
+        </div>
+        <ul id="alertsList"></ul>
+    </div>
+
+    <!-- Detailed Metric Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                <h2 id="modalTitle" style="margin: 0;">Metric Details</h2>
+                <div class="forecast-model-selector">
+                    <button class="forecast-btn active" onclick="switchForecastModel('linear', this)">📈 Linear Trend</button>
+                    <button class="forecast-btn" onclick="switchForecastModel('ma', this)">〰️ Moving Avg</button>
+                    <button class="forecast-btn" onclick="switchForecastModel('band', this)">🛡️ Confidence Band</button>
+                    <button class="forecast-btn export-btn" onclick="exportCurrentMetricCSV()">⬇️ Export</button>
+                </div>
+            </div>
+            <canvas id="historyChart"></canvas>
+            <div id="anomalyText" style="margin-top: 20px;"></div>
+            <div id="simulationSection" style="margin-top: 25px; border-top: 1px solid #eee; padding-top: 15px;">
+                <h3>🛡️ Single-Metric Simulator</h3>
+                <p style="font-size: 0.85em; opacity: 0.7;">Adjust value to inspect local threshold impact:</p>
+                <input type="range" id="simSlider" style="width: 100%;" oninput="runSimulation()">
+                <div style="margin-top: 10px; font-weight: bold; color: #8e44ad;" id="simResult">AI Forecast: Stable</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Correlation Heatmap Modal -->
+    <div id="corrModal" class="modal">
+        <div class="modal-content" style="max-width: 850px;">
+            <span class="close-btn" onclick="closeCorrelationsModal()">&times;</span>
+            <h2 style="text-align: center; color: #4b0082; margin-top: 0;">🔗 Cross-Sector Pearson Correlation Heatmap</h2>
+            <p style="text-align: center; font-size: 0.9em; opacity: 0.7; margin-bottom: 20px;">
+                Real-time mathematical correlation between operational variables across Manufacturing, City, Healthcare &amp; Business.
+            </p>
+            <div id="corrMatrixContainer" style="overflow-x: auto;">
+                <div style="text-align: center; padding: 20px;">Calculating correlation matrix...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Architecture Visualizer Modal -->
+    <div id="archModal" class="modal">
+        <div class="modal-content arch-content" style="max-width: 900px;">
+            <span class="close-btn" onclick="closeArchModal()">&times;</span>
+            <h2 style="text-align: center; color: #4b0082;">🛡️ AI-Governed Decision Integrity Architecture</h2>
+            <div class="arch-flow">
+                <div class="arch-node">
+                    <div class="node-icon">📡</div>
+                    <b>DataGuard</b>
+                    <span>Hygiene &amp; Quality</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node active">
+                    <div class="node-icon">🧠</div>
+                    <b>Ensemble ML</b>
+                    <span>Isolation Forest + XAI</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node">
+                    <div class="node-icon">🤖</div>
+                    <b>Agentic AI</b>
+                    <span>RAG SOP Engine</span>
+                </div>
+                <div class="arch-arrow">➜</div>
+                <div class="arch-node">
+                    <div class="node-icon">📊</div>
+                    <b>Decision Impact</b>
+                    <span>Feedback Loop</span>
+                </div>
+            </div>
+            <div style="margin-top: 30px; background: #f8fafc; padding: 20px; border-radius: 15px; font-size: 0.9em; color: #333">
+                <p><b>Working Principle:</b> The system ingests streaming telemetry through <b>DataGuard</b> for hygiene and drift analysis. The <b>Ensemble ML Layer</b> (Isolation Forest + Z-Score) isolates anomalies and computes a 24h failure probability. The <b>RCA &amp; Business Impact Engine</b> correlates cross-sector metrics into daily monetary loss estimates, passing insights to <b>4 Autonomous AI Agents</b> that ground remediation in <b>Enterprise SOP Manuals</b>. Finally, the <b>Incident &amp; Feedback System</b> closes the loop with human validation.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="health-status" id="healthStatus">Checking System Status...</div>
+        <div>RT-AIDIS 2.0 Enterprise | © 2026 DeepMind Analytics</div>
+    </footer>
+
+</div> <!-- End Main Dashboard -->
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
