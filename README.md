@@ -15,6 +15,14 @@ INTEGRATE ──► OBSERVE ──► DETECT ──► INVESTIGATE ──► PRE
 
 ---
 
+## 🌟 Modern Interactive Landing Page & Console
+
+RT-AIDIS 2.0 features a dedicated futuristic glassmorphic **Landing Page** and **Live Enterprise Console**:
+- **`GET /`**: High-performance interactive **Landing Page** featuring live telemetry tickers, 8-phase lifecycle visualization, multi-sector use cases, and an interactive **Live Anomaly Sandbox**.
+- **`GET /dashboard`**: Full-fledged **Enterprise AI Decision Console** with streaming charts, DataGuard lineage DAG, What-If simulator, and HITL incident management.
+
+---
+
 ## 🚀 Core Platform Architecture
 
 ### 1. 📡 Enterprise Integration & Data Ingestion
@@ -38,7 +46,7 @@ INTEGRATE ──► OBSERVE ──► DETECT ──► INVESTIGATE ──► PRE
   - **Financial Loss at Risk (₹ / day)**
   - **Estimated Downtime Duration (Hours)**
   - **Customer SLA Vulnerability Level**
-- **Explainable AI (XAI)**: Decomposes causal dependencies across correlated system variables.
+- **Explainable AI (XAI)**: Decomposes causal dependencies across correlated system variables with Pearson correlation matrices.
 
 ### 5. 🧪 What-If Scenario Simulator 2.0
 - Interactive multi-variable operational sandbox:
@@ -75,7 +83,7 @@ INTEGRATE ──► OBSERVE ──► DETECT ──► INVESTIGATE ──► PRE
 | **Data Science & ML** | Scikit-Learn (`IsolationForest`, `LinearRegression`), NumPy |
 | **Observability & XAI** | DataGuard 5-Pillar Engine, Pearson Correlation Matrix, Z-Score Filter |
 | **GenAI & Agents** | Simulated 4-Agent Orchestrator, In-Memory RAG Vector / BM25 Knowledge Base |
-| **Frontend Platform** | Vanilla JavaScript (ES6+), CSS3 Glassmorphism, Chart.js, Sortable.js, Web Audio API |
+| **Frontend Platform** | HTML5, Vanilla JavaScript (ES6+), CSS3 Glassmorphism, Chart.js, Sortable.js, Canvas Particles |
 
 ---
 
@@ -83,8 +91,8 @@ INTEGRATE ──► OBSERVE ──► DETECT ──► INVESTIGATE ──► PRE
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd RT-AIDIS-FINAL
+   git clone https://github.com/vaishnavireddy067/RT-AIDIS-IntegrityAI.git
+   cd RT-AIDIS-IntegrityAI
    ```
 
 2. **Install dependencies**:
@@ -96,4 +104,6 @@ INTEGRATE ──► OBSERVE ──► DETECT ──► INVESTIGATE ──► PRE
    ```bash
    python app.py
    ```
+   - Open **`http://127.0.0.1:<port>/`** to explore the **Landing Page**.
+   - Navigate to **`http://127.0.0.1:<port>/dashboard`** to access the **Enterprise Console**.
 

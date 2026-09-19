@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT-AIDIS 2.0 | Enterprise AI Decision Intelligence & Autonomous Observability Platform</title>
+    <meta name="description" content="RT-AIDIS 2.0 is an enterprise platform integrating streaming IoT telemetry, ensemble ML anomaly detection, explainable root-cause analysis, and agentic SOP orchestration.">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+
+    <!-- Particle Background Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Ambient Glowing Blurs -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="ambient-glow glow-3"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="landing-nav">
+        <div class="container nav-container">
+            <a href="/" class="nav-brand">
+                <span class="brand-icon">🛡️</span>
+                <div class="brand-text">
+                    <span class="brand-name">RT-AIDIS <span>2.0</span></span>
+                    <span class="brand-badge">Enterprise Intelligence</span>
+                </div>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#lifecycle">Lifecycle</a></li>
+                <li><a href="#capabilities">Capabilities</a></li>
+                <li><a href="#sandbox">Live Sandbox</a></li>
+                <li><a href="#sectors">Sectors</a></li>
+                <li><a href="/health" target="_blank">System Health</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    <span>AI Consensus: ACTIVE</span>
+                </div>
+                <a href="/dashboard" class="btn-primary">
+                    <span>🚀 Launch Console</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <span>⚡ NEXT-GEN OPERATIONAL INTELLIGENCE</span>
+                </div>
+                <h1 class="hero-title">
+                    Autonomous AI for <br>
+                    <span class="gradient-text">Mission-Critical Decision Integrity</span>
+                </h1>
+                <p class="hero-desc">
+                    Unify operational IoT telemetry and business ERP data. Detect multi-model ensemble anomalies, isolate causal root causes with Explainable AI, and orchestrate 4-tier autonomous agent remediation in real time.
+                </p>
+
+                <div class="hero-ctas">
+                    <a href="/dashboard" class="btn-primary">
+                        <span>🚀 Launch Enterprise Console</span>
+                    </a>
+                    <a href="#sandbox" class="btn-outline">
+                        <span>🧪 Try Live Sandbox</span>
+                    </a>
+                    <a href="/download_csv" class="btn-outline">
+                        <span>📥 Export Live Telemetry (CSV)</span>
+                    </a>
+                </div>
+
+                <div class="hero-metrics">
+                    <div class="metric-item">
+                        <div class="metric-val counter-val" data-target="99.94" data-suffix="%">99.94%</div>
+                        <div class="metric-lbl">Decision Integrity</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-val counter-val" data-target="12" data-suffix="ms" data-prefix="<">&lt;12ms</div>
+                        <div class="metric-lbl">Inference Latency</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-val counter-val" data-target="4" data-suffix="-Tier">4-Tier</div>
+                        <div class="metric-lbl">Agent Pipeline</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-val counter-val" data-target="4.8" data-prefix="₹" data-suffix="M+">₹4.8M+</div>
+                        <div class="metric-lbl">Loss Prevented</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Interactive Preview Widget -->
+            <div class="hero-preview">
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <div class="preview-title">
+                            <span>📡 Real-Time Telemetry Stream</span>
+                        </div>
+                        <div class="preview-live-badge">
+                            <span class="status-dot" style="background:#f87171;"></span>
+                            <span>LIVE INGESTION</span>
+                        </div>
+                    </div>
+
+                    <div class="preview-stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-box-label">Integrity Index</div>
+                            <div class="stat-box-val" id="preview-integrity-score">98.6%</div>
+                            <div class="stat-box-trend trend-good">
+                                <span>▲ Optimal Consensus</span>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-box-label">Consensus State</div>
+                            <div class="stat-box-val" id="preview-status-badge" style="font-size: 1.1rem; color: #38bdf8;">Optimal</div>
+                            <div class="stat-box-trend trend-good">
+                                <span>● 3-Sigma Gaussian Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preview-feed">
+                        <div class="feed-title">
+                            <span>Cross-Sector Telemetry Feed</span>
+                            <span>Status</span>
+                        </div>
+                        <div id="preview-feed-rows">
+                            <div class="feed-row">
+                                <span class="feed-metric">Turbine Vibration</span>
+                                <span>0.042 mm/s</span>
+                                <span class="feed-status-ok">Optimal</span>
+                            </div>
+                            <div class="feed-row">
+                                <span class="feed-metric">Defects Count</span>
+                                <span>2 units</span>
+                                <span class="feed-status-ok">Optimal</span>
+                            </div>
+                            <div class="feed-row">
+                                <span class="feed-metric">Substation Load</span>
+                                <span>74.2 MW</span>
+                                <span class="feed-status-ok">Optimal</span>
+                            </div>
+                            <div class="feed-row">
+                                <span class="feed-metric">ICU Oxygen Flow</span>
+                                <span>99.1%</span>
+                                <span class="feed-status-ok">Optimal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Ticker Banner -->
+    <div class="live-ticker-wrap">
+        <div class="ticker-track" id="ticker-track">
+            <div class="ticker-item"><span class="tag">MANUFACTURING</span> Production Velocity: <span class="val">98.4%</span> [Optimal]</div>
+            <div class="ticker-item"><span class="tag">ENERGY</span> Grid Frequency: <span class="val">50.02 Hz</span> [Stable]</div>
+            <div class="ticker-item"><span class="tag">HEALTHCARE</span> Cardiac Bed Saturation: <span class="val">84.1%</span> [Nominal]</div>
+            <div class="ticker-item"><span class="tag">ERP</span> Supply Latency: <span class="val">1.2 hrs</span> [Optimal]</div>
+            <div class="ticker-item"><span class="tag">DATAGUARD</span> 5-Pillar Observability: <span class="val">100% Score</span></div>
+        </div>
+    </div>
+
+    <!-- Operational Lifecycle Section -->
+    <section id="lifecycle" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill">Enterprise Lifecycle</span>
+                <h2 class="section-title">The 8-Phase Closed-Loop Decision Cycle</h2>
+                <p class="section-subtitle">From real-time sensor ingestion to autonomous agent action and human-in-the-loop audit governance.</p>
+            </div>
+
+            <div class="lifecycle-flow">
+                <div class="lifecycle-step">
+                    <div class="step-num">01</div>
+                    <div class="step-icon">📡</div>
+                    <div class="step-title">INTEGRATE</div>
+                    <div class="step-sub">APIs, IoT Streams & ERP</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">02</div>
+                    <div class="step-icon">🛡️</div>
+                    <div class="step-title">OBSERVE</div>
+                    <div class="step-sub">DataGuard 5-Pillar Lineage</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">03</div>
+                    <div class="step-icon">🧠</div>
+                    <div class="step-title">DETECT</div>
+                    <div class="step-sub">Isolation Forest + 3-Sigma</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">04</div>
+                    <div class="step-icon">🔬</div>
+                    <div class="step-title">INVESTIGATE</div>
+                    <div class="step-sub">XAI Correlation & RCA</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">05</div>
+                    <div class="step-icon">🔮</div>
+                    <div class="step-title">PREDICT</div>
+                    <div class="step-sub">24h Horizon Prognosis</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">06</div>
+                    <div class="step-icon">💰</div>
+                    <div class="step-title">IMPACT</div>
+                    <div class="step-sub">Loss (₹) & Downtime Risk</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">07</div>
+                    <div class="step-icon">🤖</div>
+                    <div class="step-title">DECIDE</div>
+                    <div class="step-sub">4-Agent Autonomous Plan</div>
+                </div>
+                <div class="lifecycle-step">
+                    <div class="step-num">08</div>
+                    <div class="step-icon">👥</div>
+                    <div class="step-title">ACT</div>
+                    <div class="step-sub">HITL Feedback & SOP Action</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8 Core Capabilities Section -->
+    <section id="capabilities" class="section" style="background: rgba(11, 17, 32, 0.4);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill">Core Architecture</span>
+                <h2 class="section-title">Enterprise-Grade Intelligence Modules</h2>
+                <p class="section-subtitle">High-availability analytics, machine learning, and agentic orchestration designed for 24/7 industrial resilience.</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Card 1 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">📡</div>
+                    <h3>Enterprise Ingestion</h3>
+                    <p>High-throughput telemetry ingestion across Manufacturing, Smart Cities, ERP, and Health systems with variable simulation controls.</p>
+                    <div class="feature-tags">
+                        <span>IoT Gateway</span>
+                        <span>Zero Data Loss</span>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">🛡️</div>
+                    <h3>DataGuard Observability</h3>
+                    <p>Continuous monitoring across 5 pillars: Freshness, Schema Validity, Completeness, Drift, and Outlier Spikes with DAG lineage topology.</p>
+                    <div class="feature-tags">
+                        <span>5-Pillar Quality</span>
+                        <span>Cascade Radius</span>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">🧠</div>
+                    <h3>Ensemble ML Engine</h3>
+                    <p>Contamination-robust Isolation Forests paired with Gaussian 3-Sigma statistical thresholds and 24-hour predictive maintenance horizon.</p>
+                    <div class="feature-tags">
+                        <span>Isolation Forest</span>
+                        <span>Z-Score Consensus</span>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">💰</div>
+                    <h3>Financial Loss & SLA XAI</h3>
+                    <p>Real-time quantification of financial loss at risk (₹/day), customer SLA breach exposure, and explainable causal root-cause attribution.</p>
+                    <div class="feature-tags">
+                        <span>Cost-at-Risk</span>
+                        <span>Pearson RCA</span>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">🧪</div>
+                    <h3>What-If Simulator 2.0</h3>
+                    <p>Multi-variable operational sandbox to project production velocity, staff reallocation, demand surges, and thermal load impacts.</p>
+                    <div class="feature-tags">
+                        <span>Sandbox</span>
+                        <span>ROI Projections</span>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">🤖</div>
+                    <h3>Multi-Agent & RAG SOPs</h3>
+                    <p>4 autonomous agents (Data, ML, RCA, Decision) collaborate to draft instant 3-step remediation playbooks grounded in verified SOP manuals.</p>
+                    <div class="feature-tags">
+                        <span>4-Agent Chain</span>
+                        <span>RAG Knowledge</span>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">📋</div>
+                    <h3>Incident HITL Feedback</h3>
+                    <p>Complete ticket lifecycle management with human-in-the-loop approvals, adjustment records, and automated reinforcement tuning.</p>
+                    <div class="feature-tags">
+                        <span>HITL Loop</span>
+                        <span>Continuous Learn</span>
+                    </div>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="feature-card">
+                    <div class="feature-icon-wrap">🛡️</div>
+                    <h3>AI Governance & RBAC</h3>
+                    <p>Production model registry with drift tracking, cryptographic audit logs, and granular Role-Based Access Control (Admin, SRE, Ops, Operator).</p>
+                    <div class="feature-tags">
+                        <span>Model Registry</span>
+                        <span>RBAC Audit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Anomaly Sandbox Section -->
+    <section id="sandbox" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill">Interactive Demo</span>
+                <h2 class="section-title">Test The Anomaly Consensus Engine</h2>
+                <p class="section-subtitle">Inject live telemetry spikes and observe how the multi-model ensemble consensus and agentic RCA react instantaneously.</p>
+            </div>
+
+            <div class="sandbox-card">
+                <div class="sandbox-grid">
+                    <div class="sandbox-controls">
+                        <div class="sandbox-control-group">
+                            <label>1. Select Target Telemetry Metric</label>
+                            <div class="anomaly-selector">
+                                <button class="btn-sandbox-pill active" data-metric="Turbine Vibration">⚙️ Turbine Vibration</button>
+                                <button class="btn-sandbox-pill" data-metric="Defects Count">🔬 Defects Count</button>
+                                <button class="btn-sandbox-pill" data-metric="Substation Load">⚡ Substation Load</button>
+                                <button class="btn-sandbox-pill" data-metric="ICU Oxygen Flow">🏥 ICU Oxygen Flow</button>
+                            </div>
+                        </div>
+
+                        <div class="sandbox-control-group">
+                            <label>2. Execute Live Simulation Action</label>
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <button id="btn-sandbox-trigger" class="btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                    <span>⚡ Trigger Test Anomaly</span>
+                                </button>
+                                <button id="btn-sandbox-reset" class="btn-outline">
+                                    <span>🔄 Reset to Nominal</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.82rem; color: var(--text-dim);">
+                            * Injections trigger real-time updates across the background ensemble data engine and alert listeners.
+                        </div>
+                    </div>
+
+                    <div class="sandbox-display">
+                        <div class="sandbox-status-header">
+                            <div>
+                                <span style="font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase;">Consensus Response</span>
+                                <div id="sandbox-metric-val" style="font-size: 1.3rem; font-weight: 700; color: #38bdf8; font-family: var(--font-mono);">Nominal</div>
+                            </div>
+                            <div id="sandbox-anomaly-state" class="status-pill">
+                                SYSTEM OPTIMAL
+                            </div>
+                        </div>
+
+                        <div class="ai-consensus-box">
+                            <div class="consensus-title">🤖 4-Agent Orchestration Log</div>
+                            <div id="sandbox-consensus-out" class="consensus-output">
+                                ✅ All streaming channels operating within 3-Sigma Gaussian confidence limits. Isolation Forest anomaly score: 0.04 (Normal).
+                            </div>
+                        </div>
+
+                        <div style="text-align: right;">
+                            <a href="/dashboard" class="btn-outline" style="font-size: 0.82rem; padding: 0.45rem 1rem;">
+                                <span>Inspect Full Graph in Console →</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Multi-Sector Solutions Section -->
+    <section id="sectors" class="section" style="background: rgba(11, 17, 32, 0.4);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-pill">Domain Adaptability</span>
+                <h2 class="section-title">Built for Multi-Industry Scale</h2>
+                <p class="section-subtitle">Seamlessly ingest heterogeneous data formats across manufacturing plants, urban smart grids, healthcare, and enterprise supply chains.</p>
+            </div>
+
+            <div class="sectors-grid">
+                <div class="sector-card">
+                    <div class="sector-icon">🏭</div>
+                    <h3>Manufacturing 4.0</h3>
+                    <p>Continuous monitoring of turbine vibration, thermal drift, defect density, and assembly line bottleneck prevention.</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🏙️</div>
+                    <h3>Smart Cities & Grids</h3>
+                    <p>Real-time electrical substation load balancing, traffic congestion prediction, and urban energy telemetry observability.</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">🏥</div>
+                    <h3>Clinical Healthcare</h3>
+                    <p>ICU oxygen flow monitoring, emergency triage capacity planning, and medical device anomaly early-warning systems.</p>
+                </div>
+                <div class="sector-card">
+                    <div class="sector-icon">📦</div>
+                    <h3>ERP & Supply Chain</h3>
+                    <p>Fulfillment latency tracking, shipment SLA breach alerts, demand spike forecast, and unit margin loss prevention.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner Section -->
+    <section class="container">
+        <div class="cta-banner">
+            <h2>Ready to Deploy Autonomous Decision Integrity?</h2>
+            <p>Experience real-time data observability, multi-model anomaly detection, and agentic SOP remediation in the live interactive console.</p>
+            <div style="display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap;">
+                <a href="/dashboard" class="btn-primary" style="font-size: 1.05rem; padding: 0.85rem 2rem;">
+                    <span>🚀 Open Enterprise Console</span>
+                </a>
+                <a href="/download_csv" class="btn-outline" style="font-size: 1.05rem; padding: 0.85rem 2rem;">
+                    <span>📥 Download Telemetry Report</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="nav-brand">
+                        <span class="brand-icon">🛡️</span>
+                        <div class="brand-text">
+                            <span class="brand-name">RT-AIDIS <span>2.0</span></span>
+                            <span class="brand-badge">Decision Intelligence</span>
+                        </div>
+                    </div>
+                    <p>Enterprise AI Integration, Observability & Decision Intelligence Platform with Real-Time Multi-Agent Consensus.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="/dashboard">Enterprise Console</a></li>
+                        <li><a href="#lifecycle">8-Step Lifecycle</a></li>
+                        <li><a href="#capabilities">Core Modules</a></li>
+                        <li><a href="#sandbox">Live Anomaly Sandbox</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>API & Telemetry</h4>
+                    <ul>
+                        <li><a href="/data" target="_blank">/data Endpoint</a></li>
+                        <li><a href="/integrity" target="_blank">/integrity Score</a></li>
+                        <li><a href="/health" target="_blank">/health Status</a></li>
+                        <li><a href="/download_csv">Export CSV Report</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Security & Governance</h4>
+                    <ul>
+                        <li><a href="javascript:void(0)">AES-256 Encryption</a></li>
+                        <li><a href="javascript:void(0)">SOC2 Type II Ready</a></li>
+                        <li><a href="javascript:void(0)">Model Registry Audit</a></li>
+                        <li><a href="javascript:void(0)">RBAC Permissions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>© 2026 RT-AIDIS 2.0 Enterprise. All rights reserved.</div>
+                <div>Status: <span style="color: var(--success);">● System Operational (100% Uptime)</span></div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+</body>
+</html>

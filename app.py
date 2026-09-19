@@ -16,6 +16,10 @@ data_engine.start_background_thread()
 # ROUTES
 # -----------------------------
 @app.route("/")
+def landing_page():
+    return render_template("landing.html")
+
+@app.route("/dashboard")
 def dashboard():
     return render_template("index.html")
 
