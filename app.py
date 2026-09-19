@@ -248,18 +248,29 @@ def governance_api():
 # -----------------------------
 # AUTO FREE PORT
 # -----------------------------
-def free_port():
-    s = socket.socket()
-    s.bind(('', 0))
-    port = s.getsockname()[1]
-    s.close()
-    return port
+def free_port(preferred_port=5000):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(('127.0.0.1', preferred_port))
+        s.close()
+        return preferred_port
+    except Exception:
+        s = socket.socket()
+        s.bind(('', 0))
+        port = s.getsockname()[1]
+        s.close()
+        return port
 
 # -----------------------------
 # RUN
 # -----------------------------
 if __name__ == "__main__":
     port = free_port()
+    print("\n=======================================================")
+    print(f"[*] RT-AIDIS 2.0 Live Server Started!")
+    print(f"[*] Landing Page:       http://127.0.0.1:{port}/")
+    print(f"[*] Enterprise Console: http://127.0.0.1:{port}/dashboard")
+    print("=======================================================\n")
     # Timer to open browser after short delay
     threading.Timer(1.5, lambda: webbrowser.open(f"http://127.0.0.1:{port}")).start()
-    app.run(port=port, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False)
